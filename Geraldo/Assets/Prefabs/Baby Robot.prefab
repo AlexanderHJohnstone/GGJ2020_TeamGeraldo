@@ -187,7 +187,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4237922943935622655
+--- !u!114 &8193388863429052101
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,10 +196,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8937898315496570005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62e3d11b1b2934c12958011dba3085a3, type: 3}
+  m_Script: {fileID: 11500000, guid: d8ed415ecd2bc47979f9c34b12daf0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementController: {fileID: 0}
+  _grappleTarget: {fileID: 0}
+  _followSpeed: 0
+  _isGrappling: 0
 --- !u!1001 &8150235882081331906
 PrefabInstance:
   m_ObjectHideFlags: 0
