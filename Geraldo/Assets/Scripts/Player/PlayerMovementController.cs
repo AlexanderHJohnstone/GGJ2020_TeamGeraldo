@@ -22,6 +22,7 @@ public class PlayerMovementController : MonoBehaviour
 
     //grapple fields
     private float _radius;
+    private float _rotationDirection;
     public float _angle;
     private Vector3 _attachPoint;
     public GameObject _grappleSlot;
@@ -80,9 +81,15 @@ public class PlayerMovementController : MonoBehaviour
                 if(grapple)
                 {
                     float currentSpeed = _velocity.magnitude;
-                    Vector3 dir = _attachPoint - transform.position;
-                    Vector3 newDirection = Vector3.Cross(dir, Vector3.forward).normalized;
-                    _velocity = new Vector3(newDirection.x, newDirection.y, 0f).normalized * currentSpeed;
+                    Vector3 dir = (transform.position - _attachPoint).normalized;
+                    if(_rotationDirection > 0f)
+                    {
+                        _velocity = new Vector3(-dir.y, dir.x, 0f).normalized * currentSpeed;
+                    }
+                    else
+                    {
+                        _velocity = new Vector3(dir.y, -dir.x, 0f).normalized * currentSpeed;
+                    }
                     _currentGrappleState = _grappleStates._retracting;
                 }
                 break;
@@ -119,7 +126,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void GrappleMovement(float hDir)
     {
-        _angle += _velocity.magnitude / _radius;
+        _angle += (_velocity.magnitude / _radius) * _rotationDirection;
         if(_angle > 360f)
         {
             _angle -= 360f;
@@ -168,9 +175,22 @@ public class PlayerMovementController : MonoBehaviour
         if (_currentGrappleState == _grappleStates._shooting)
         {
             _grapple.transform.position = _attachPoint;
-            _radius = Vector3.Distance(transform.position, _attachPoint);
             Vector3 dir = (transform.position - _attachPoint).normalized;
+            _radius = Vector3.Distance(transform.position, _attachPoint);
             _angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+            //get angle from attach point
+            float incomingAngle = Vector3.SignedAngle((attachPoint - transform.position).normalized, _velocity.normalized, Vector3.forward);
+            Debug.Log(incomingAngle);
+
+            if(Mathf.Sign(incomingAngle) > 0)
+            {
+                _rotationDirection = -1;
+            }
+            else
+            {
+                _rotationDirection = 1;
+            }
             _currentGrappleState = _grappleStates._attached;
         }
     }
