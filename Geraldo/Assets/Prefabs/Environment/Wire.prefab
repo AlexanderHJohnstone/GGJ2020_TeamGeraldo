@@ -74,11 +74,10 @@ SpriteShapeRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 0
   m_ShapeTexture: {fileID: 0}
-  m_Sprites:
-  - {fileID: 21300000, guid: fd2b4092cc94a0e4e89d9bf7d79161fc, type: 3}
+  m_Sprites: []
   m_LocalAABB:
-    m_Center: {x: 0.0025048256, y: -2.699381, z: -0.005}
-    m_Extent: {x: 4.4921484, y: 2.800619, z: 0.005}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &8256141869012117512
 MonoBehaviour:
   m_ObjectHideFlags: 0
