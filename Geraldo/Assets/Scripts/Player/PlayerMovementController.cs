@@ -80,7 +80,7 @@ public class PlayerMovementController : MonoBehaviour
                 LookRotationFree();
                 ShootGrapple();
 
-                if(grapple)
+                if(!grapple)
                 {
                     _currentGrappleState = _grappleStates._retracting;
                 }
@@ -94,7 +94,7 @@ public class PlayerMovementController : MonoBehaviour
                 GrappleMovement();
                 LookRotationGrapple();
 
-                if(grapple)
+                if(!grapple)
                 {
                     Vector3 dir = (transform.position - _attachPoint).normalized;
                     if(_rotationDirection > 0f)

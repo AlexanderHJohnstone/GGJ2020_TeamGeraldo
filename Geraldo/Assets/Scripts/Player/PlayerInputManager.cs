@@ -10,7 +10,7 @@ public class PlayerInputManager : MonoBehaviour
     private void Update()
     {
         _horizontal = Input.GetAxis("Horizontal");
-        _grapple = Input.GetButtonDown("Grapple");
+        _grapple = Input.GetButton("Grapple");
     }
 
     public float GetHorizontal()
