@@ -37,7 +37,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ScrollSpeed: 0.35
-    - _Width: 100
+    - _Width: 15
     - _X_Tiling: 0.025
     - _Y_Tiling: 1
     - __dirty: 0
