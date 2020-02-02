@@ -4,6 +4,8 @@ public class ScrewController : MonoBehaviour
 {
     [SerializeField]
     GameObject nut;
+    [SerializeField]
+    private Transform lugNutTransform;
 
     [Header("ROTATION LIMITS")]
     [SerializeField]
@@ -44,8 +46,6 @@ public class ScrewController : MonoBehaviour
 
     private Material screwMat;
 
-    private Transform myTransform;
-
     private Rigidbody screwRB;
 
     private Animator anim;
@@ -61,7 +61,6 @@ public class ScrewController : MonoBehaviour
         pController = FindObjectOfType<PlayerMovementController>();
 
         //setup component connections
-        myTransform = GetComponent<Transform>();
         anim = nut.GetComponent<Animator>();
         screwRB = nut.GetComponent<Rigidbody>();
         screwMat = nut.GetComponent<Renderer>().material;
@@ -82,9 +81,9 @@ public class ScrewController : MonoBehaviour
                 Mathf.Abs(pController._angle - _angleLastFrame),
                 Mathf.Abs(Mathf.Abs(pController._angle - _angleLastFrame) - 360));
 
-            _angleEslaped += angleDif;
+            _angleEslaped += angleDif * playerRotationDir;
 
-            counter = _angleEslaped / 360f * playerRotationDir;
+            counter = _angleEslaped / 360f;
             _angleLastFrame = pController._angle;
 
             
@@ -97,7 +96,7 @@ public class ScrewController : MonoBehaviour
             {
                 UpdateLightBulbIntensityScale();
                 float screwAngle = counter * 360;
-                myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
+                lugNutTransform.eulerAngles = new Vector3(screwAngle, -90, 90);
                 UpdateAnimation();
 
                 if (counter <= _directedRotationUntilTightened)
@@ -140,13 +139,14 @@ public class ScrewController : MonoBehaviour
         hasPlayer = true;
 
         playerRotationDir = pController._rotationDirection;
-        _angleEslaped = 0f;
+        //_angleEslaped = 0f;
         _angleLastFrame = pController._angle;
         rotationOnLatch = pController._angle;
     }
 
     public void OnPlayerDetach()
     {
+
         hasPlayer = false;
     }
 
