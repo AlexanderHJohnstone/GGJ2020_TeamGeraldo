@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Cinemachine;
 
 public class ScrewController : MonoBehaviour
 {
@@ -94,7 +95,7 @@ public class ScrewController : MonoBehaviour
 
             float screwAngle = counter * 360;
 
-            myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
+            nut.transform.eulerAngles = new Vector3(screwAngle, -90f, 90f);
             UpdateAnimation();
             
             if (!fullyTightened)

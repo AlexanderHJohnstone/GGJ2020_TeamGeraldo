@@ -164,7 +164,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if(_currentRotationSpeed < _minimumRotationSpeed)
         {
-            _currentRotationSpeed = Mathf.Lerp(_currentRotationSpeed, _minimumRotationSpeed, Time.deltaTime * 3f);
+            _currentRotationSpeed = Mathf.Lerp(_currentRotationSpeed, _minimumRotationSpeed, Time.deltaTime * 1f);
         }
         if(_radius < _minGrappleRadius)
         {
