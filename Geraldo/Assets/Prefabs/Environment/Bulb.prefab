@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4596526467982507158}
   - component: {fileID: 4596526467982507157}
+  - component: {fileID: 5160350830117866570}
   m_Layer: 11
   m_Name: Bulb
   m_TagString: Untagged
@@ -30,6 +31,7 @@ Transform:
   m_Children:
   - {fileID: 8938819565607864900}
   - {fileID: 5430894823485838540}
+  - {fileID: 5432263960845590896}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -47,6 +49,72 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &5160350830117866570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4596526467982507163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6dcc0ec29150fd4e9aa8406097fd101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intensityScale: 0
+  _emissionController: {fileID: 196530936886147806}
+--- !u!1 &7515757663740624005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5432263960845590896}
+  - component: {fileID: 196530936886147806}
+  m_Layer: 11
+  m_Name: Lightbulb Emission
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5432263960845590896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7515757663740624005}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4596526467982507158}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &196530936886147806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7515757663740624005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50aa18215840c4968a1716856c6d4305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startIllumination: 0
+  _fillaments: {fileID: 695420711373854222}
+  _vents: {fileID: 431313079195986850}
+  _light: {fileID: 1524125519536925158}
+  _completeThreshold: 0.95
+  _color: {r: 8.562924, g: 6.9656954, b: 0.93171716, a: 0}
+  _inactiveColor: {r: 16.937668, g: 1.4415036, b: 1.5135789, a: 0}
+  _activeColor: {r: 0.6439758, g: 5.5908804, b: 0.61470413, a: 0}
+  _lightIntensity: {x: 0, y: 1.5}
 --- !u!1 &8815280937555221029
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +328,18 @@ PrefabInstance:
 --- !u!4 &8938819565607864900 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 917731cb4893048d1a9ee0429909979a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4140960654205378910}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &695420711373854222 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3517597962075420496, guid: 917731cb4893048d1a9ee0429909979a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4140960654205378910}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &431313079195986850 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4362845868315052796, guid: 917731cb4893048d1a9ee0429909979a,
     type: 3}
   m_PrefabInstance: {fileID: 4140960654205378910}
   m_PrefabAsset: {fileID: 0}
