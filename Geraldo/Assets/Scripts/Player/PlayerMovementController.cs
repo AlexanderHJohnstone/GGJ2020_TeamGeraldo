@@ -275,6 +275,11 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
+    public void ReleaseGrapple()
+    {
+        _currentGrappleState = _grappleStates._retracting;
+    }
+
     private void LookRotationFree()
     {
         //rotate to movement direction

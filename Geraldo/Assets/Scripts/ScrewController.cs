@@ -21,8 +21,6 @@ public class ScrewController : MonoBehaviour
     private Color defaultColor = Color.white;
 
     [SerializeField]
-    private float rotationCounter = 0;
-    [SerializeField]
     GameObject nut;
 
     public bool hasPlayer = false;
@@ -57,8 +55,6 @@ public class ScrewController : MonoBehaviour
     private void Start()
     {
         //convert the rotation min and max vars to rotation values
-        rotationsUntilTightened *= 360.0f;
-        rotationsUntilPopOut *= -360.0f;
 
         pController = GameObject.FindObjectOfType<PlayerMovementController>();
 
@@ -77,11 +73,6 @@ public class ScrewController : MonoBehaviour
     private int counter = 0;
     private void Update()
     {
-        ////Temp Code
-        //playerRot = rotationSlider.value * 4;
-        //rotationCounter = 360 * playerRot;
-        ////end temp
-
         //rotationCounter will be pulled from player script
         if (turningEnabled && hasPlayer)
         {
@@ -99,31 +90,28 @@ public class ScrewController : MonoBehaviour
 
             _angleLastFrame = pController._angle;
 
+            float screwAngle = counter * 360 + _angleEslaped * playerRotationDir;
             if (!fullyTightened)
             {
-                myTransform.eulerAngles = new Vector3(0, 0, (counter + _angleEslaped/360) * 360 * playerRotationDir);
+                myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
                 UpdateAnimation();
 
-                if (rotationCounter >= rotationsUntilTightened)
+                if (counter >= rotationsUntilTightened)
                     SetTightended();
-                else if (rotationCounter <= rotationsUntilPopOut)
+                else if (counter >= rotationsUntilPopOut)
                     ScrewFallOut();
             }
             else
             {
-                if (rotationCounter < rotationsUntilTightened)
+                if (counter < rotationsUntilTightened)
                 {
-                    myTransform.eulerAngles = new Vector3(0, 0, rotationCounter);
+                    myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
                     UpdateAnimation();
-
                     SetBackToNorm();
                 }
             }
         }
     }
-
-
-
 
     public void OnPlayerLatch()
     {
@@ -144,10 +132,9 @@ public class ScrewController : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        animationPercentage = Mathf.InverseLerp(rotationsUntilTightened, rotationsUntilPopOut, rotationCounter);
-        anim.SetFloat("AnimationTime", animationPercentage);
+        float percent = Mathf.InverseLerp(-rotationsUntilTightened, rotationsUntilPopOut, _angleEslaped / 360 * -playerRotationDir);
+        anim.SetFloat("AnimationTime", percent);
     }
-
 
     /// <summary>
     /// Undoes the fully tightened thing and allows the screw to move as normal again
@@ -166,7 +153,7 @@ public class ScrewController : MonoBehaviour
     {
         fullyTightened = true;
         screwMat.SetColor(matPropertyToChange, tightenedColor);
-        pController.RetractGrapple();
+        pController.ReleaseGrapple();
         //stop player's momentum?
     }
 
@@ -184,7 +171,7 @@ public class ScrewController : MonoBehaviour
         anim.enabled = false;
         myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
-        pController.RetractGrapple();
+        pController.ReleaseGrapple();
 
         //player let go of screw
     }
