@@ -1137,6 +1137,9 @@ MonoBehaviour:
   _grappleTarget: {fileID: 8949666913073109747}
   _visualGrappleSlot: {fileID: 8949666911767776838}
   _armLine: {fileID: 8949666911959915548}
+  _robotMesh: {fileID: 2269019346090221443}
+  _deathParticlesPrefab: {fileID: 4531237796587698616, guid: 61f2bbc1f16ed435c81a46d3876abcc2,
+    type: 3}
   _acceleration: 0.075
   _horizontalDrag: 0.99
   _maxHorizontalSpeed: 10
@@ -1152,7 +1155,7 @@ MonoBehaviour:
   _attachablesLayerMask:
     serializedVersion: 2
     m_Bits: 2048
-  _playerMovement: 0
+  _deathResetDelay: 1
 --- !u!1 &8949666913073109747
 GameObject:
   m_ObjectHideFlags: 0

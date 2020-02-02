@@ -15,12 +15,14 @@ public class PlayerMovementController : MonoBehaviour
     public GameObject _grappleTarget;
     public GameObject _visualGrappleSlot;
     public LineRenderer _armLine;
+    public GameObject _robotMesh;
+    public GameObject _deathParticlesPrefab;
 
     private float _hDir;
     private float _lookDir;
     private Vector3 _velocity;
-    private enum _grappleStates { _idle, _shooting, _retracting, _attached};
-    private _grappleStates _currentGrappleState;
+    public enum _grappleStates { _idle, _shooting, _retracting, _attached};
+    public _grappleStates _currentGrappleState;
 
     //public movement fields
     [Header("MOVEMENT PROPERTIES")]
@@ -50,8 +52,10 @@ public class PlayerMovementController : MonoBehaviour
     public LayerMask _attachablesLayerMask;
 
     private bool _playerMovement;
-
     private GameObject _currentCheckpoint;
+
+    [Header("MISC PROPERTIES")]
+    public float _deathResetDelay = 1f;
 
     private void Awake()
     {
@@ -104,6 +108,8 @@ public class PlayerMovementController : MonoBehaviour
                         _playerMovement = true;
                     }
 
+                    _grappleMeshFollower.GrappleStart();
+                    _grappleTarget.transform.parent = _playerRoot;
                     _armLine.enabled = true;
                     _canLaunchGrapple = false;
                     Vector3 mousePosition = Input.mousePosition;
@@ -239,9 +245,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private void ShootGrapple()
     {
-        _grappleMeshFollower.GrappleStart();
-        _grappleTarget.transform.parent = _playerRoot;
-
         float distanceFromPlayer = Vector3.Distance(transform.position, _grappleTarget.transform.position);
         float distanceToTarget = Vector3.Distance(_grappleTarget.transform.position, _targetPosition);
         if (distanceFromPlayer < _maxGrappleDistance && distanceToTarget > 0.1f)
@@ -333,8 +336,26 @@ public class PlayerMovementController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
     }
 
+    public void PlayerDeath()
+    {
+        _playerMovement = false;
+        _canLaunchGrapple = false;
+        _robotMesh.SetActive(false);
+        Instantiate(_deathParticlesPrefab, transform.position, Quaternion.identity);
+        StartCoroutine(ResetCountdown());
+    }
+
+    private IEnumerator ResetCountdown()
+    {
+        yield return new WaitForSeconds(_deathResetDelay);
+
+        ResetPlayer();
+    }
+
     private void ResetPlayer()
     {
+        _canLaunchGrapple = true;
+        _robotMesh.SetActive(true);
         _grappleTarget.transform.parent = _grappleSlot.transform;
         _grappleTarget.transform.position = _grappleSlot.transform.position;
         _grappleMeshFollower.GrappleReset();
@@ -350,9 +371,16 @@ public class PlayerMovementController : MonoBehaviour
         {
             _velocity = Vector3.zero;
             _playerMovement = false;
-            transform.position = new Vector3(_currentCheckpoint.transform.position.x, _currentCheckpoint.transform.position.y + 10f, 0f);
+            transform.position = new Vector3(_currentCheckpoint.transform.position.x, _currentCheckpoint.transform.position.y - 5f, 0f);
         }
         _currentGrappleState = _grappleStates._idle;
+
+        //Reset dem Screws
+        ScrewController[] screws = GameObject.FindObjectsOfType<ScrewController>();
+        foreach(ScrewController screw in screws)
+        {
+            screw.ResetScrewCompletely();
+        }
     }
 
     public void SetCheckpoint(GameObject newCheckpoint)
@@ -364,7 +392,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Killzone"))
         {
-            ResetPlayer();
+            PlayerDeath();
         }
     }
 }
