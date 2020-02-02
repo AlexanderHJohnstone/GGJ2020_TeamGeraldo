@@ -3,14 +3,21 @@
 public class ScrewController : MonoBehaviour
 {
     [SerializeField]
-    private float rotationsUntilTightened = 2;
-    private float _directedRotationUntilTightened => -rotationsUntilTightened;
+    GameObject nut;
+
+    [Header("ROTATION LIMITS")]
+    [SerializeField]
+    private float rotationFromMiddle = 2;
+    private float _directedRotationUntilTightened => -rotationFromMiddle;
+
+    private float _directedRotationsUntilPopOut => rotationFromMiddle;
 
     [SerializeField]
-    private float rotationsUntilPopOut = 2;
-    private float _directedRotationsUntilPopOut => rotationsUntilPopOut;
+    [Range(0.1f, 0.9f)]
+    private float initialScrewPosition = 0.5f;
 
     //Color change Vars
+    [Header("COLORS")]
     [SerializeField]
     private string matPropertyToChange = "_Color";
     [SerializeField]
@@ -20,12 +27,17 @@ public class ScrewController : MonoBehaviour
     [SerializeField]
     private Color defaultColor = Color.white;
 
+    [Header("DO-NOT-MODIFY PROPERTIES")]
     [SerializeField]
-    GameObject nut;
-
+    private float playerRotationDir = -1;
+    [SerializeField]
+    private float counter = 0;
     public bool hasPlayer = false;
-
     public float rotationOnLatch = 0f;
+
+    [Header("LIGHT BULBS")]
+    [SerializeField]
+    private LightBulbController[] lightBulbs;
 
     //Private Vars
     private PlayerMovementController pController;
@@ -42,11 +54,6 @@ public class ScrewController : MonoBehaviour
 
     private bool fullyTightened = false;
 
-    private CapsuleCollider myCol;
-
-    [SerializeField]
-    private float playerRotationDir = -1;
-
     private void Start()
     {
         //convert the rotation min and max vars to rotation values
@@ -55,17 +62,16 @@ public class ScrewController : MonoBehaviour
 
         //setup component connections
         myTransform = GetComponent<Transform>();
-        myCol = GetComponent<CapsuleCollider>();
         anim = nut.GetComponent<Animator>();
         screwRB = nut.GetComponent<Rigidbody>();
         screwMat = nut.GetComponent<Renderer>().material;
+
+        anim.SetFloat("AnimationTime", initialScrewPosition);
+        counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
     }
 
     private float _angleLastFrame = 0;
     private float _angleEslaped = 0f;
-
-    [SerializeField]
-    private float counter = 0;
 
     private void Update()
     {
@@ -81,10 +87,16 @@ public class ScrewController : MonoBehaviour
             counter = _angleEslaped / 360f * playerRotationDir;
             _angleLastFrame = pController._angle;
 
-            float screwAngle = counter * 360;
+            
 
+            
+
+           
+            
             if (!fullyTightened)
             {
+                UpdateLightBulbIntensityScale();
+                float screwAngle = counter * 360;
                 myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
                 UpdateAnimation();
 
@@ -95,20 +107,32 @@ public class ScrewController : MonoBehaviour
             }
             else
             {
-                if (counter > _directedRotationUntilTightened)
+                if (playerRotationDir == 1)
                 {
-                    myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
-                    UpdateAnimation();
                     SetBackToNorm();
                 }
             }
         }
     }
 
+    private void UpdateLightBulbIntensityScale()
+    {
+        if (lightBulbs == null || lightBulbs.Length == 0)
+            return;
+
+        float rotationPercent = Mathf.InverseLerp(
+            _directedRotationUntilTightened,
+            _directedRotationsUntilPopOut,
+            -1 * counter);
+
+        foreach (var bulb in lightBulbs)
+            bulb.SetIntensityScale(rotationPercent, (int)playerRotationDir);
+    }
+
     private void OnValidate()
     {
-        rotationsUntilTightened = Mathf.Max(0.1f, rotationsUntilTightened);
-        rotationsUntilPopOut = Mathf.Max(0.1f, rotationsUntilPopOut);
+        rotationFromMiddle = Mathf.Max(0.1f, rotationFromMiddle);
+        counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
     }
 
     public void OnPlayerLatch()
@@ -118,7 +142,6 @@ public class ScrewController : MonoBehaviour
         playerRotationDir = pController._rotationDirection;
         _angleEslaped = 0f;
         _angleLastFrame = pController._angle;
-        counter = 0;
         rotationOnLatch = pController._angle;
     }
 
@@ -167,7 +190,6 @@ public class ScrewController : MonoBehaviour
         screwRB.useGravity = true;
         screwRB.isKinematic = false;
         anim.enabled = false;
-        myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
         pController.ReleaseGrapple();
         //player let go of screw

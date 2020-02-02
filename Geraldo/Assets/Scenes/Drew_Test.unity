@@ -1380,29 +1380,29 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1516931880, guid: 2b9dccc87aaf7481792e147fbdabd647, type: 3}
       propertyPath: m_Positions.Array.data[0].x
-      value: -14.533232
+      value: -13.453232
       objectReference: {fileID: 0}
     - target: {fileID: 1516931880, guid: 2b9dccc87aaf7481792e147fbdabd647, type: 3}
       propertyPath: m_Positions.Array.data[0].y
-      value: -10.88408
+      value: -11.12408
       objectReference: {fileID: 0}
     - target: {fileID: 1516931880, guid: 2b9dccc87aaf7481792e147fbdabd647, type: 3}
       propertyPath: m_Positions.Array.data[1].x
-      value: 13.673231
+      value: 14.753231
       objectReference: {fileID: 0}
     - target: {fileID: 1516931880, guid: 2b9dccc87aaf7481792e147fbdabd647, type: 3}
       propertyPath: m_Positions.Array.data[1].y
-      value: -6.155921
+      value: -6.3959208
       objectReference: {fileID: 0}
     - target: {fileID: 3587101141142649344, guid: 2b9dccc87aaf7481792e147fbdabd647,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.43
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 3587101141142649344, guid: 2b9dccc87aaf7481792e147fbdabd647,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.52
+      value: -8.76
       objectReference: {fileID: 0}
     - target: {fileID: 3587101141142649344, guid: 2b9dccc87aaf7481792e147fbdabd647,
         type: 3}
@@ -1472,6 +1472,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _grappleTargetingCheckRadius
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8949666912658526185, guid: d557516d4bb2746fa93d77c709d4ebb1,
+        type: 3}
+      propertyPath: _minGrappleRadius
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8949666913436188564, guid: d557516d4bb2746fa93d77c709d4ebb1,
         type: 3}
