@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ScrewController : MonoBehaviour
 {
+    [Header("ROTATION LIMITS")]
     [SerializeField]
     private float rotationsUntilTightened = 2;
     private float _directedRotationUntilTightened => -rotationsUntilTightened;
@@ -11,6 +13,7 @@ public class ScrewController : MonoBehaviour
     private float _directedRotationsUntilPopOut => rotationsUntilPopOut;
 
     //Color change Vars
+    [Header("COLORS")]
     [SerializeField]
     private string matPropertyToChange = "_Color";
     [SerializeField]
@@ -20,12 +23,20 @@ public class ScrewController : MonoBehaviour
     [SerializeField]
     private Color defaultColor = Color.white;
 
+
+    [Header("DO-NOT-MODIFY PROPERTIES")]
     [SerializeField]
     GameObject nut;
-
+    [SerializeField]
+    private float playerRotationDir = -1;
+    [SerializeField]
+    private float counter = 0;
     public bool hasPlayer = false;
-
     public float rotationOnLatch = 0f;
+
+    [Header("LIGHT BULBS")]
+    [SerializeField]
+    private LightBulbController[] lightBulbs;
 
     //Private Vars
     private PlayerMovementController pController;
@@ -44,9 +55,6 @@ public class ScrewController : MonoBehaviour
 
     private CapsuleCollider myCol;
 
-    [SerializeField]
-    private float playerRotationDir = -1;
-
     private void Start()
     {
         //convert the rotation min and max vars to rotation values
@@ -64,9 +72,6 @@ public class ScrewController : MonoBehaviour
     private float _angleLastFrame = 0;
     private float _angleEslaped = 0f;
 
-    [SerializeField]
-    private float counter = 0;
-
     private void Update()
     {
         //rotationCounter will be pulled from player script
@@ -80,6 +85,8 @@ public class ScrewController : MonoBehaviour
 
             counter = _angleEslaped / 360f * playerRotationDir;
             _angleLastFrame = pController._angle;
+
+            UpdateLightBulbIntensityScale();
 
             float screwAngle = counter * 360;
 
@@ -103,6 +110,20 @@ public class ScrewController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void UpdateLightBulbIntensityScale()
+    {
+        if (lightBulbs == null || lightBulbs.Length == 0)
+            return;
+
+        float rotationPercent = Mathf.InverseLerp(
+            _directedRotationUntilTightened,
+            _directedRotationsUntilPopOut,
+            -1 * counter);
+
+        foreach (var bulb in lightBulbs)
+            bulb.SetIntensityScale(rotationPercent, (int)playerRotationDir);
     }
 
     private void OnValidate()
