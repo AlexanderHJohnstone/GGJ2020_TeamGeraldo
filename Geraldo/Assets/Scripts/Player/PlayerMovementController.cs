@@ -33,7 +33,7 @@ public class PlayerMovementController : MonoBehaviour
     [Header("GRAPPLE FIELDS")]
     private float _radius;
     private float _rotationDirection;
-    private float _angle;
+    public float _angle;
     private Vector3 _attachPoint;
     private Vector3 _targetPosition;
     public float _grappleSpeed = 10f;
@@ -177,7 +177,7 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    private void RetractGrapple()
+    public void RetractGrapple()
     {
         _grappleMeshFollower.GrappleEnd();
         _grappleTarget.transform.position = Vector3.MoveTowards(_grappleTarget.transform.position, _grappleSlot.transform.position, _grappleSpeed * Time.deltaTime);

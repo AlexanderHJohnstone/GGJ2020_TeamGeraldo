@@ -9,5 +9,19 @@ public class PlayerGrappleController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _movementController.AttachGrapple(new Vector3(transform.position.x, transform.position.y, 0f));
+
+        if (other.gameObject.TryGetComponent<ScrewController>(out var screwController))
+        {
+            screwController.hasPlayer = true;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.TryGetComponent<ScrewController>(out var screwController))
+        {
+            screwController.hasPlayer = false;
+        }
     }
 }

@@ -20,14 +20,14 @@ public class ScrewController : MonoBehaviour
     [SerializeField]
     private Color defaultColor = Color.white;
 
-    //Debug Vars
-    [SerializeField]
-    private bool hasPlayer = false;
+    public bool hasPlayer = false;
 
     [SerializeField]
     private float rotationCounter = 0;
 
     //Private Vars
+    private PlayerMovementController pController;
+
     private Material screwMat;
 
     private Transform myTransform;
@@ -40,7 +40,7 @@ public class ScrewController : MonoBehaviour
 
     private bool fullyTightened = false;
 
-    private float playerRot;
+    //private float playerRot;
 
     private float animationPercentage = 0.5f;
 
@@ -58,6 +58,8 @@ public class ScrewController : MonoBehaviour
         rotationsUntilTightened *= 360.0f;
         rotationsUntilPopOut *= -360.0f;
 
+        pController = GameObject.FindObjectOfType<PlayerMovementController>();
+
         //setup component connections
         myTransform = GetComponent<Transform>();
         myCol = GetComponent<CapsuleCollider>();
@@ -68,11 +70,12 @@ public class ScrewController : MonoBehaviour
 
     private void Update()
     {
-        //Temp Code
-        playerRot = rotationSlider.value * 4;
-        rotationCounter = 360 * playerRot;
-        //end temp
+        ////Temp Code
+        //playerRot = rotationSlider.value * 4;
+        //rotationCounter = 360 * playerRot;
+        ////end temp
 
+        rotationCounter = pController._angle;
 
         //rotationCounter will be pulled from player script
         if (turningEnabled && hasPlayer)
@@ -96,7 +99,6 @@ public class ScrewController : MonoBehaviour
 
                     SetBackToNorm();
                 }
-
             }
         }
     }
@@ -126,6 +128,7 @@ public class ScrewController : MonoBehaviour
     {
         fullyTightened = true;
         screwMat.SetColor(matPropertyToChange, tightenedColor);
+        pController.RetractGrapple();
         //stop player's momentum?
     }
 
@@ -143,6 +146,7 @@ public class ScrewController : MonoBehaviour
         anim.enabled = false;
         myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
+        pController.RetractGrapple();
         //player let go of screw
     }
 }
