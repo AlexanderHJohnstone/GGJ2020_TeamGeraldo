@@ -1,17 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class ScrewController : MonoBehaviour
 {
     [SerializeField]
-    private int rotationsUntilTightened = 2;
-    private int _rotateUntilTightened => -1 * rotationsUntilTightened;
+    private float rotationsUntilTightened = 2;
+    private float _directedRotationUntilTightened => -rotationsUntilTightened;
 
     [SerializeField]
     private float rotationsUntilPopOut = 2;
-    private float _rotateUntilPopOut => rotationsUntilPopOut;
+    private float _directedRotationsUntilPopOut => rotationsUntilPopOut;
 
     //Color change Vars
     [SerializeField]
@@ -30,7 +27,6 @@ public class ScrewController : MonoBehaviour
 
     public float rotationOnLatch = 0f;
 
-
     //Private Vars
     private PlayerMovementController pController;
 
@@ -46,10 +42,6 @@ public class ScrewController : MonoBehaviour
 
     private bool fullyTightened = false;
 
-    //private float playerRot;
-
-    private float animationPercentage = 0.5f;
-
     private CapsuleCollider myCol;
 
     [SerializeField]
@@ -59,7 +51,7 @@ public class ScrewController : MonoBehaviour
     {
         //convert the rotation min and max vars to rotation values
 
-        pController = GameObject.FindObjectOfType<PlayerMovementController>();
+        pController = FindObjectOfType<PlayerMovementController>();
 
         //setup component connections
         myTransform = GetComponent<Transform>();
@@ -73,7 +65,8 @@ public class ScrewController : MonoBehaviour
     private float _angleEslaped = 0f;
 
     [SerializeField]
-    private int counter = 0;
+    private float counter = 0;
+
     private void Update()
     {
         //rotationCounter will be pulled from player script
@@ -85,31 +78,24 @@ public class ScrewController : MonoBehaviour
 
             _angleEslaped += angleDif;
 
-            if ((int)(_angleEslaped / 360) > 0)
-            {
-                _angleEslaped -= 360f;
-                counter++;
-            }
-
+            counter = _angleEslaped / 360f * playerRotationDir;
             _angleLastFrame = pController._angle;
 
-            float screwAngle = counter * 360 + _angleEslaped * playerRotationDir;
-            int directedCounter = counter * (int)playerRotationDir;
+            float screwAngle = counter * 360;
 
             if (!fullyTightened)
             {
                 myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
                 UpdateAnimation();
 
-
-                if (directedCounter <= _rotateUntilTightened)
+                if (counter <= _directedRotationUntilTightened)
                     SetTightended();
-                else if (directedCounter >= _rotateUntilPopOut)
+                else if (counter >= _directedRotationsUntilPopOut)
                     ScrewFallOut();
             }
             else
             {
-                if (directedCounter > _rotateUntilTightened)
+                if (counter > _directedRotationUntilTightened)
                 {
                     myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
                     UpdateAnimation();
@@ -119,6 +105,12 @@ public class ScrewController : MonoBehaviour
         }
     }
 
+    private void OnValidate()
+    {
+        rotationsUntilTightened = Mathf.Max(0.1f, rotationsUntilTightened);
+        rotationsUntilPopOut = Mathf.Max(0.1f, rotationsUntilPopOut);
+    }
+
     public void OnPlayerLatch()
     {
         hasPlayer = true;
@@ -126,7 +118,6 @@ public class ScrewController : MonoBehaviour
         playerRotationDir = pController._rotationDirection;
         _angleEslaped = 0f;
         _angleLastFrame = pController._angle;
-        _angleEslaped = 0f;
         counter = 0;
         rotationOnLatch = pController._angle;
     }
@@ -138,7 +129,7 @@ public class ScrewController : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        float percent = Mathf.InverseLerp(_rotateUntilTightened, _rotateUntilPopOut, (counter + _angleEslaped / 360) * -playerRotationDir);
+        float percent = Mathf.InverseLerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, -1 * counter);
         percent = Mathf.Min(percent, 0.97f); //1 reset clip to 0:00
         anim.SetFloat("AnimationTime", percent);
     }
@@ -179,7 +170,6 @@ public class ScrewController : MonoBehaviour
         myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
         pController.ReleaseGrapple();
-
         //player let go of screw
     }
 }
