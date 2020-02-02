@@ -21,7 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     private _grappleStates _currentGrappleState;
 
     //public movement fields
-    [Header("MOVEMENT FIELDS")]
+    [Header("MOVEMENT PROPERTIES")]
     public float _acceleration = 0.1f;
     [Range(0f, 1f)]
     public float _horizontalDrag = 0.95f;
@@ -30,7 +30,7 @@ public class PlayerMovementController : MonoBehaviour
     public float _gravity = 10f;
 
     //grapple fields
-    [Header("GRAPPLE FIELDS")]
+    [Header("GRAPPLE PROPERTIES")]
     public float _rotationDirection;
     private float _radius;
     public float _angle;
@@ -41,6 +41,11 @@ public class PlayerMovementController : MonoBehaviour
     private float _currentRotationSpeed;
     public float _minimumRotationSpeed = 3f;
     private bool _canLaunchGrapple = true;
+    public float _grappleTargetingCheckRadius = 5f;
+    public LayerMask _attachablesLayerMask;
+
+    [Header("DEBUGGING PROPERTIES")]
+    public bool _playerMovement;
 
     private void Start()
     {
@@ -82,6 +87,7 @@ public class PlayerMovementController : MonoBehaviour
                     Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
                     _targetPosition = mouseWorldPosition;
                     _currentGrappleState = _grappleStates._shooting;
+                    FindTarget();
                 }
                 break;
             case _grappleStates._shooting:
@@ -127,6 +133,11 @@ public class PlayerMovementController : MonoBehaviour
 
     private void AirMovement()
     {
+        if(!_playerMovement)
+        {
+            return;
+        }
+
         //air control
         if (Mathf.Abs(_hDir) > 0f)
         {
@@ -169,6 +180,35 @@ public class PlayerMovementController : MonoBehaviour
         _grappleTarget.transform.position = new Vector3(_attachPoint.x, _attachPoint.y, 0f);
     }
 
+    private void FindTarget()
+    {
+        float distance = _grappleTargetingCheckRadius;
+        Vector3 direction = (_targetPosition - transform.position).normalized;
+        while(distance < _maxGrappleDistance)
+        {
+            Vector3 testPosition = transform.position + direction * distance;
+            Collider[] attachables = Physics.OverlapSphere(testPosition, _grappleTargetingCheckRadius, _attachablesLayerMask);
+            if(attachables.Length > 0)
+            {
+                _targetPosition = attachables[0].gameObject.transform.position;
+                for(int i = 1; i < attachables.Length; i++)
+                {
+                    float distanceToOld = Vector3.Distance(transform.position, _targetPosition);
+                    float distanceToNew = Vector3.Distance(transform.position, attachables[i].gameObject.transform.position);
+                    if(distanceToNew < distanceToOld)
+                    {
+                        _targetPosition = attachables[i].gameObject.transform.position;
+                    }
+                }
+                return;
+            }
+            else
+            {
+                distance += _grappleTargetingCheckRadius;
+            }
+        }
+    }
+
     private void ShootGrapple()
     {
         _grappleMeshFollower.GrappleStart();
@@ -191,7 +231,6 @@ public class PlayerMovementController : MonoBehaviour
         _grappleTarget.transform.position = Vector3.MoveTowards(_grappleTarget.transform.position, _grappleSlot.transform.position, _grappleSpeed * Time.deltaTime);
         if(Vector3.Distance(_grappleTarget.transform.position, _grappleSlot.transform.position) < 0.5f)
         {
-            Debug.Log("Retracted");
             _armLine.enabled = false;
             _grappleMeshFollower.GrappleEnd();
             _grappleTarget.transform.parent = _grappleSlot.transform;
