@@ -6,9 +6,12 @@ using UnityEngine.UI;
 public class ScrewController : MonoBehaviour
 {
     [SerializeField]
-    private float rotationsUntilTightened = 2.0f;
+    private int rotationsUntilTightened = 2;
+    private int _rotateUntilTightened => -1 * rotationsUntilTightened;
+
     [SerializeField]
-    private float rotationsUntilPopOut = 2.0f;
+    private float rotationsUntilPopOut = 2;
+    private float _rotateUntilPopOut => rotationsUntilPopOut;
 
     //Color change Vars
     [SerializeField]
@@ -91,19 +94,22 @@ public class ScrewController : MonoBehaviour
             _angleLastFrame = pController._angle;
 
             float screwAngle = counter * 360 + _angleEslaped * playerRotationDir;
+            int directedCounter = counter * (int)playerRotationDir;
+
             if (!fullyTightened)
             {
                 myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
                 UpdateAnimation();
 
-                if (counter >= rotationsUntilTightened)
+
+                if (directedCounter <= _rotateUntilTightened)
                     SetTightended();
-                else if (counter >= rotationsUntilPopOut)
+                else if (directedCounter >= _rotateUntilPopOut)
                     ScrewFallOut();
             }
             else
             {
-                if (counter < rotationsUntilTightened)
+                if (directedCounter > _rotateUntilTightened)
                 {
                     myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
                     UpdateAnimation();
@@ -132,7 +138,8 @@ public class ScrewController : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        float percent = Mathf.InverseLerp(-rotationsUntilTightened, rotationsUntilPopOut, _angleEslaped / 360 * -playerRotationDir);
+        float percent = Mathf.InverseLerp(_rotateUntilTightened, _rotateUntilPopOut, (counter + _angleEslaped / 360) * -playerRotationDir);
+        percent = Mathf.Min(percent, 0.97f); //1 reset clip to 0:00
         anim.SetFloat("AnimationTime", percent);
     }
 
