@@ -4,6 +4,8 @@ public class ScrewController : MonoBehaviour
 {
     [SerializeField]
     GameObject nut;
+    [SerializeField]
+    private Transform lugNutTransform;
 
     [Header("ROTATION LIMITS")]
     [SerializeField]
@@ -44,8 +46,6 @@ public class ScrewController : MonoBehaviour
 
     private Material screwMat;
 
-    private Transform myTransform;
-
     private Rigidbody screwRB;
 
     private Animator anim;
@@ -61,7 +61,6 @@ public class ScrewController : MonoBehaviour
         pController = FindObjectOfType<PlayerMovementController>();
 
         //setup component connections
-        myTransform = GetComponent<Transform>();
         anim = nut.GetComponent<Animator>();
         screwRB = nut.GetComponent<Rigidbody>();
         screwMat = nut.GetComponent<Renderer>().material;
@@ -82,9 +81,9 @@ public class ScrewController : MonoBehaviour
                 Mathf.Abs(pController._angle - _angleLastFrame),
                 Mathf.Abs(Mathf.Abs(pController._angle - _angleLastFrame) - 360));
 
-            _angleEslaped += angleDif;
+            _angleEslaped += angleDif * playerRotationDir;
 
-            counter = _angleEslaped / 360f * playerRotationDir;
+            counter = _angleEslaped / 360f;
             _angleLastFrame = pController._angle;
 
             
@@ -95,9 +94,9 @@ public class ScrewController : MonoBehaviour
             
             if (!fullyTightened)
             {
-                UpdateLightBulbIntensityScale();
+               // UpdateLightBulbIntensityScale();
                 float screwAngle = counter * 360;
-                myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
+                lugNutTransform.eulerAngles = new Vector3(screwAngle, -90, 90);
                 UpdateAnimation();
 
                 if (counter <= _directedRotationUntilTightened)
@@ -115,19 +114,19 @@ public class ScrewController : MonoBehaviour
         }
     }
 
-    private void UpdateLightBulbIntensityScale()
-    {
-        if (lightBulbs == null || lightBulbs.Length == 0)
-            return;
+    //private void UpdateLightBulbIntensityScale()
+    //{
+    //    if (lightBulbs == null || lightBulbs.Length == 0)
+    //        return;
 
-        float rotationPercent = Mathf.InverseLerp(
-            _directedRotationUntilTightened,
-            _directedRotationsUntilPopOut,
-            -1 * counter);
+    //    float rotationPercent = Mathf.InverseLerp(
+    //        _directedRotationUntilTightened,
+    //        _directedRotationsUntilPopOut,
+    //        -1 * counter);
 
-        foreach (var bulb in lightBulbs)
-            bulb.SetIntensityScale(rotationPercent, (int)playerRotationDir);
-    }
+    //    foreach (var bulb in lightBulbs)
+    //        bulb.SetIntensityScale(rotationPercent, (int)playerRotationDir);
+    //}
 
     private void OnValidate()
     {
@@ -140,13 +139,14 @@ public class ScrewController : MonoBehaviour
         hasPlayer = true;
 
         playerRotationDir = pController._rotationDirection;
-        _angleEslaped = 0f;
+        //_angleEslaped = 0f;
         _angleLastFrame = pController._angle;
         rotationOnLatch = pController._angle;
     }
 
     public void OnPlayerDetach()
     {
+
         hasPlayer = false;
     }
 
@@ -174,7 +174,7 @@ public class ScrewController : MonoBehaviour
     {
         fullyTightened = true;
         screwMat.SetColor(matPropertyToChange, tightenedColor);
-        pController.ReleaseGrapple();
+        //pController.ReleaseGrapple();
         //stop player's momentum?
     }
 
@@ -193,5 +193,14 @@ public class ScrewController : MonoBehaviour
         screwMat.SetColor(matPropertyToChange, loosenedColor);
         pController.ReleaseGrapple();
         //player let go of screw
+    }
+
+    private void ResetScrewCompletely()
+    {
+        SetBackToNorm();
+        anim.SetFloat("AnimationTime", initialScrewPosition);
+        counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
+        _angleLastFrame = 0;
+
     }
 }

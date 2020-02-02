@@ -19,6 +19,11 @@ public class PlayerGrappleController : MonoBehaviour
         {
             screwController.OnPlayerLatch();
         }
+
+        if(other.gameObject.TryGetComponent<CheckpointController>(out var checkpointController))
+        {
+            checkpointController.Activate();
+        }
     }
 
     private void OnTriggerExit(Collider other)
