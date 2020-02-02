@@ -374,6 +374,13 @@ public class PlayerMovementController : MonoBehaviour
             transform.position = new Vector3(_currentCheckpoint.transform.position.x, _currentCheckpoint.transform.position.y - 5f, 0f);
         }
         _currentGrappleState = _grappleStates._idle;
+
+        //Reset dem Screws
+        ScrewController[] screws = GameObject.FindObjectsOfType<ScrewController>();
+        foreach(ScrewController screw in screws)
+        {
+            screw.ResetScrewCompletely();
+        }
     }
 
     public void SetCheckpoint(GameObject newCheckpoint)

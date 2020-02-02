@@ -27,19 +27,13 @@ public class AssetRandomizer : MonoBehaviour
 
     public void RandomizeMaterials ()
     {
-        if (_assets.Length == 0 || _materials.Length == 0) return;
+        if (_materials.Length == 0) return;
 
         int index = Random.Range(0, _materials.Length);
 
-        foreach (GameObject g in _assets)
-        {
-            MeshRenderer[] renderers = g.GetComponentsInChildren<MeshRenderer>();
+        MeshRenderer mr = transform.GetChild(0).GetComponentInChildren<MeshRenderer>();
 
-            foreach (MeshRenderer mr in renderers)
-            {
-                mr.material = _materials[index];
-            }
-        }
+        mr.material = _materials[index];
     }
 
     public void RandomizeRotation ()
