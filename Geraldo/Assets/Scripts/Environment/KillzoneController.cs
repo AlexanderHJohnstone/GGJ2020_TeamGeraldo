@@ -41,8 +41,8 @@ public class KillzoneController : MonoBehaviour
 
     private void AdjustToNewWidth()
     {
-        _leftBlock.localPosition = new Vector3(-_width, 0f, 0f);
-        _rightBlock.localPosition = new Vector3(_width, 0f, 0f);
+        _leftBlock.localPosition = new Vector3(-_width / 2f, 0f, 0f);
+        _rightBlock.localPosition = new Vector3(_width / 2, 0f, 0f);
         _collider.size = new Vector3(_width, 1f, 1f);
         _killLine.SetPosition(0, _leftBlock.position);
         _killLine.SetPosition(1, _rightBlock.position);
