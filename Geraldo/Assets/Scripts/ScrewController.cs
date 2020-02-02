@@ -1,16 +1,20 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScrewController : MonoBehaviour
 {
+    [SerializeField]
+    GameObject nut;
+
     [Header("ROTATION LIMITS")]
     [SerializeField]
-    private float rotationsUntilTightened = 2;
-    private float _directedRotationUntilTightened => -rotationsUntilTightened;
+    private float rotationFromMiddle = 2;
+    private float _directedRotationUntilTightened => -rotationFromMiddle;
+
+    private float _directedRotationsUntilPopOut => rotationFromMiddle;
 
     [SerializeField]
-    private float rotationsUntilPopOut = 2;
-    private float _directedRotationsUntilPopOut => rotationsUntilPopOut;
+    [Range(0.1f, 0.9f)]
+    private float initialScrewPosition = 0.5f;
 
     //Color change Vars
     [Header("COLORS")]
@@ -23,10 +27,7 @@ public class ScrewController : MonoBehaviour
     [SerializeField]
     private Color defaultColor = Color.white;
 
-
     [Header("DO-NOT-MODIFY PROPERTIES")]
-    [SerializeField]
-    GameObject nut;
     [SerializeField]
     private float playerRotationDir = -1;
     [SerializeField]
@@ -67,6 +68,9 @@ public class ScrewController : MonoBehaviour
         anim = nut.GetComponent<Animator>();
         screwRB = nut.GetComponent<Rigidbody>();
         screwMat = nut.GetComponent<Renderer>().material;
+
+        anim.SetFloat("AnimationTime", initialScrewPosition);
+        counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
     }
 
     private float _angleLastFrame = 0;
@@ -90,11 +94,11 @@ public class ScrewController : MonoBehaviour
 
             float screwAngle = counter * 360;
 
+            myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
+            UpdateAnimation();
+            
             if (!fullyTightened)
             {
-                myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
-                UpdateAnimation();
-
                 if (counter <= _directedRotationUntilTightened)
                     SetTightended();
                 else if (counter >= _directedRotationsUntilPopOut)
@@ -104,8 +108,6 @@ public class ScrewController : MonoBehaviour
             {
                 if (counter > _directedRotationUntilTightened)
                 {
-                    myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
-                    UpdateAnimation();
                     SetBackToNorm();
                 }
             }
@@ -128,8 +130,8 @@ public class ScrewController : MonoBehaviour
 
     private void OnValidate()
     {
-        rotationsUntilTightened = Mathf.Max(0.1f, rotationsUntilTightened);
-        rotationsUntilPopOut = Mathf.Max(0.1f, rotationsUntilPopOut);
+        rotationFromMiddle = Mathf.Max(0.1f, rotationFromMiddle);
+        counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
     }
 
     public void OnPlayerLatch()
@@ -139,7 +141,6 @@ public class ScrewController : MonoBehaviour
         playerRotationDir = pController._rotationDirection;
         _angleEslaped = 0f;
         _angleLastFrame = pController._angle;
-        counter = 0;
         rotationOnLatch = pController._angle;
     }
 
