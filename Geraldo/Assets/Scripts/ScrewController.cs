@@ -54,8 +54,6 @@ public class ScrewController : MonoBehaviour
 
     private bool fullyTightened = false;
 
-    private CapsuleCollider myCol;
-
     private void Start()
     {
         //convert the rotation min and max vars to rotation values
@@ -64,7 +62,6 @@ public class ScrewController : MonoBehaviour
 
         //setup component connections
         myTransform = GetComponent<Transform>();
-        myCol = GetComponent<CapsuleCollider>();
         anim = nut.GetComponent<Animator>();
         screwRB = nut.GetComponent<Rigidbody>();
         screwMat = nut.GetComponent<Renderer>().material;
@@ -90,15 +87,19 @@ public class ScrewController : MonoBehaviour
             counter = _angleEslaped / 360f * playerRotationDir;
             _angleLastFrame = pController._angle;
 
-            UpdateLightBulbIntensityScale();
+            
 
-            float screwAngle = counter * 360;
+            
 
-            myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
-            UpdateAnimation();
+           
             
             if (!fullyTightened)
             {
+                UpdateLightBulbIntensityScale();
+                float screwAngle = counter * 360;
+                myTransform.eulerAngles = new Vector3(0, 0, screwAngle);
+                UpdateAnimation();
+
                 if (counter <= _directedRotationUntilTightened)
                     SetTightended();
                 else if (counter >= _directedRotationsUntilPopOut)
@@ -106,7 +107,7 @@ public class ScrewController : MonoBehaviour
             }
             else
             {
-                if (counter > _directedRotationUntilTightened)
+                if (playerRotationDir == 1)
                 {
                     SetBackToNorm();
                 }
@@ -189,7 +190,6 @@ public class ScrewController : MonoBehaviour
         screwRB.useGravity = true;
         screwRB.isKinematic = false;
         anim.enabled = false;
-        myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
         pController.ReleaseGrapple();
         //player let go of screw
