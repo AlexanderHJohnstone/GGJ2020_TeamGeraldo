@@ -32,7 +32,7 @@ public class PlayerMovementController : MonoBehaviour
     //grapple fields
     [Header("GRAPPLE FIELDS")]
     private float _radius;
-    private float _rotationDirection;
+    public float _rotationDirection;
     public float _angle;
     private Vector3 _attachPoint;
     private Vector3 _targetPosition;

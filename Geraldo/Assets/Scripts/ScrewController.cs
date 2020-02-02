@@ -20,10 +20,13 @@ public class ScrewController : MonoBehaviour
     [SerializeField]
     private Color defaultColor = Color.white;
 
-    public bool hasPlayer = false;
-
     [SerializeField]
     private float rotationCounter = 0;
+
+    public bool hasPlayer = false;
+
+    public float rotationOnLatch = 0f;
+
 
     //Private Vars
     private PlayerMovementController pController;
@@ -45,6 +48,8 @@ public class ScrewController : MonoBehaviour
     private float animationPercentage = 0.5f;
 
     private CapsuleCollider myCol;
+
+
 
     #region Temp Vars
     [SerializeField]
@@ -80,6 +85,13 @@ public class ScrewController : MonoBehaviour
         //rotationCounter will be pulled from player script
         if (turningEnabled && hasPlayer)
         {
+            int rotationMultiplier = 1;
+
+            if (pController._rotationDirection > 0 && rotationCounter > rotationOnLatch)
+                rotationMultiplier++;
+            if (pController._rotationDirection < 0 && rotationCounter < rotationOnLatch)
+                rotationMultiplier++;
+
             if (!fullyTightened)
             {
                 myTransform.eulerAngles = new Vector3(0, 0, rotationCounter);
@@ -103,6 +115,16 @@ public class ScrewController : MonoBehaviour
         }
     }
 
+
+    public void OnPlayerLatch()
+    {
+
+    }
+
+    public void OnPlayerDetach()
+    {
+
+    }
 
     private void UpdateAnimation()
     {

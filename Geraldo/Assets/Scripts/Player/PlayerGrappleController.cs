@@ -12,7 +12,7 @@ public class PlayerGrappleController : MonoBehaviour
 
         if (other.gameObject.TryGetComponent<ScrewController>(out var screwController))
         {
-            screwController.hasPlayer = true;
+            screwController.OnPlayerLatch();
         }
 
     }
@@ -21,7 +21,7 @@ public class PlayerGrappleController : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<ScrewController>(out var screwController))
         {
-            screwController.hasPlayer = false;
+            screwController.OnPlayerDetach();
         }
     }
 }
