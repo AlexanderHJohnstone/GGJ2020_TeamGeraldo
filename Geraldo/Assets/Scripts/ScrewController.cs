@@ -108,6 +108,7 @@ public class ScrewController : MonoBehaviour
             {
                 if (playerRotationDir == 1)
                 {
+                    _angleEslaped = _directedRotationUntilTightened + 0.3f;
                     SetBackToNorm();
                 }
             }
