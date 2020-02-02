@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 146517278}
   - component: {fileID: 146517277}
   - component: {fileID: 146517276}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 597082577}
   - component: {fileID: 597082576}
   - component: {fileID: 597082575}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 660131281}
   - component: {fileID: 660131280}
   - component: {fileID: 660131279}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +845,7 @@ GameObject:
   - component: {fileID: 816553275}
   - component: {fileID: 816553274}
   - component: {fileID: 816553273}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -938,7 +938,7 @@ GameObject:
   - component: {fileID: 1075592510}
   - component: {fileID: 1075592509}
   - component: {fileID: 1075592508}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1031,7 +1031,7 @@ GameObject:
   - component: {fileID: 1089574055}
   - component: {fileID: 1089574054}
   - component: {fileID: 1089574053}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,7 +1130,7 @@ GameObject:
   - component: {fileID: 1648209389}
   - component: {fileID: 1648209388}
   - component: {fileID: 1648209387}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1290,7 +1290,7 @@ GameObject:
   - component: {fileID: 2144912501}
   - component: {fileID: 2144912500}
   - component: {fileID: 2144912499}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bolt (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1457,35 +1457,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8949666911959915548, guid: d557516d4bb2746fa93d77c709d4ebb1,
+    - target: {fileID: 8949666912658526185, guid: d557516d4bb2746fa93d77c709d4ebb1,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 52eabdb0d7efc45f8a57387f3a05864d, type: 2}
-    - target: {fileID: 8949666911959915548, guid: d557516d4bb2746fa93d77c709d4ebb1,
-        type: 3}
-      propertyPath: m_Parameters.textureMode
+      propertyPath: _playerMovement
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8949666911959915548, guid: d557516d4bb2746fa93d77c709d4ebb1,
+    - target: {fileID: 8949666912658526185, guid: d557516d4bb2746fa93d77c709d4ebb1,
         type: 3}
-      propertyPath: m_Positions.Array.data[1].x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8949666911959915548, guid: d557516d4bb2746fa93d77c709d4ebb1,
-        type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8949666911959915548, guid: d557516d4bb2746fa93d77c709d4ebb1,
-        type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8949666911959915548, guid: d557516d4bb2746fa93d77c709d4ebb1,
-        type: 3}
-      propertyPath: m_UseWorldSpace
-      value: 1
+      propertyPath: _grappleTargetingCheckRadius
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8949666913436188564, guid: d557516d4bb2746fa93d77c709d4ebb1,
         type: 3}

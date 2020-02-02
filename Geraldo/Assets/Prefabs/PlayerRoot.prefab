@@ -953,8 +953,8 @@ LineRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8949666911959915550}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 0
   m_LightProbeUsage: 0
@@ -962,7 +962,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 52eabdb0d7efc45f8a57387f3a05864d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1036,7 +1036,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -1147,6 +1147,10 @@ MonoBehaviour:
   _grappleSpeed: 30
   _maxGrappleDistance: 15
   _minimumRotationSpeed: 20
+  _attachablesLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  _playerMovement: 0
 --- !u!1 &8949666913073109747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,7 +1195,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8949666913073109745
 Rigidbody:
