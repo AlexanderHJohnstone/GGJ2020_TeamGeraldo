@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3706487702655986235}
   - component: {fileID: 3706487702655986232}
   - component: {fileID: 3706487702655986233}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Nail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
