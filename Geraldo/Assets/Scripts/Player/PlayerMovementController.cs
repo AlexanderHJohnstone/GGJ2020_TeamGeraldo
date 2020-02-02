@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputManager))]
 public class PlayerMovementController : MonoBehaviour
 {
+    public static PlayerMovementController _instance;
+
     [Header("COMPONENET REFERENCES")]
     public Transform _playerRoot;
     private PlayerInputManager _inputManager;
@@ -47,15 +49,29 @@ public class PlayerMovementController : MonoBehaviour
     public float _grappleTargetingCheckRadius = 5f;
     public LayerMask _attachablesLayerMask;
 
-    [Header("DEBUGGING PROPERTIES")]
-    public bool _playerMovement;
+    private bool _playerMovement;
+
+    private GameObject _currentCheckpoint;
+
+    private void Awake()
+    {
+        if(_instance == null)
+        {
+            _instance = this;
+        }
+        else if(_instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
         _inputManager = GetComponent<PlayerInputManager>();
-        _velocity = new Vector3(0f, 10f, 0f);
         _currentGrappleState = _grappleStates._idle;
         _armLine.enabled = false;
+
+        _playerMovement = false;
     }
 
     private void Update()
@@ -83,6 +99,11 @@ public class PlayerMovementController : MonoBehaviour
 
                 if (_canLaunchGrapple && grapple)
                 {
+                    if(!_playerMovement)
+                    {
+                        _playerMovement = true;
+                    }
+
                     _armLine.enabled = true;
                     _canLaunchGrapple = false;
                     Vector3 mousePosition = Input.mousePosition;
@@ -164,7 +185,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if(_currentRotationSpeed < _minimumRotationSpeed)
         {
-            _currentRotationSpeed = Mathf.Lerp(_currentRotationSpeed, _minimumRotationSpeed, Time.deltaTime * 3f);
+            _currentRotationSpeed = Mathf.Lerp(_currentRotationSpeed, _minimumRotationSpeed, Time.deltaTime * 1f);
         }
         if(_radius < _minGrappleRadius)
         {
@@ -318,9 +339,25 @@ public class PlayerMovementController : MonoBehaviour
         _grappleTarget.transform.position = _grappleSlot.transform.position;
         _grappleMeshFollower.GrappleReset();
         _armLine.enabled = false;
-        _velocity = new Vector3(0f, 10f, 0f);
-        transform.position = Vector3.zero;
+        if (_currentCheckpoint == null)
+        {
+            //_velocity = new Vector3(0f, 20f, 0f);
+            _velocity = Vector3.zero;
+            _playerMovement = false;
+            transform.position = Vector3.zero;
+        }
+        else
+        {
+            _velocity = Vector3.zero;
+            _playerMovement = false;
+            transform.position = new Vector3(_currentCheckpoint.transform.position.x, _currentCheckpoint.transform.position.y + 10f, 0f);
+        }
         _currentGrappleState = _grappleStates._idle;
+    }
+
+    public void SetCheckpoint(GameObject newCheckpoint)
+    {
+        _currentCheckpoint = newCheckpoint;
     }
 
     private void OnTriggerEnter(Collider other)
