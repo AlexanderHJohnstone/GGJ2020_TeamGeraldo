@@ -400,6 +400,8 @@ MonoBehaviour:
   tightenedColor: {r: 1, g: 0, b: 0, a: 1}
   loosenedColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  resetTime: 2
+  screwPrefab: {fileID: 7948005402293142024}
   playerRotationDir: -1
   counter: 0
   hasPlayer: 0
