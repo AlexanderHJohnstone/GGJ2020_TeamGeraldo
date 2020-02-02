@@ -988,7 +988,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.3
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -1145,8 +1145,10 @@ MonoBehaviour:
   _rotationDirection: 0
   _angle: 0
   _grappleSpeed: 30
+  _minGrappleRadius: 1
   _maxGrappleDistance: 15
   _minimumRotationSpeed: 20
+  _grappleTargetingCheckRadius: 5
   _attachablesLayerMask:
     serializedVersion: 2
     m_Bits: 2048
