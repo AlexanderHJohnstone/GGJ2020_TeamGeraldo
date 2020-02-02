@@ -22,6 +22,8 @@ public class ScrewController : MonoBehaviour
 
     [SerializeField]
     private float rotationCounter = 0;
+    [SerializeField]
+    GameObject nut;
 
     public bool hasPlayer = false;
 
@@ -49,13 +51,8 @@ public class ScrewController : MonoBehaviour
 
     private CapsuleCollider myCol;
 
-
-
-    #region Temp Vars
     [SerializeField]
-    private Slider rotationSlider;
-    #endregion
-
+    private float playerRotationDir = -1;
 
     private void Start()
     {
@@ -68,11 +65,16 @@ public class ScrewController : MonoBehaviour
         //setup component connections
         myTransform = GetComponent<Transform>();
         myCol = GetComponent<CapsuleCollider>();
-        anim = GetComponentInChildren<Animator>();
-        screwRB = GetComponentInChildren<Rigidbody>();
-        screwMat = GetComponentInChildren<Renderer>().material;
+        anim = nut.GetComponent<Animator>();
+        screwRB = nut.GetComponent<Rigidbody>();
+        screwMat = nut.GetComponent<Renderer>().material;
     }
 
+    private float _angleLastFrame = 0;
+    private float _angleEslaped = 0f;
+
+    [SerializeField]
+    private int counter = 0;
     private void Update()
     {
         ////Temp Code
@@ -80,21 +82,26 @@ public class ScrewController : MonoBehaviour
         //rotationCounter = 360 * playerRot;
         ////end temp
 
-        rotationCounter = pController._angle;
-
         //rotationCounter will be pulled from player script
         if (turningEnabled && hasPlayer)
         {
-            int rotationMultiplier = 1;
+            float angleDif = Mathf.Min(
+                Mathf.Abs(pController._angle - _angleLastFrame),
+                Mathf.Abs(Mathf.Abs(pController._angle - _angleLastFrame) - 360));
 
-            if (pController._rotationDirection > 0 && rotationCounter > rotationOnLatch)
-                rotationMultiplier++;
-            if (pController._rotationDirection < 0 && rotationCounter < rotationOnLatch)
-                rotationMultiplier++;
+            _angleEslaped += angleDif;
+
+            if ((int)(_angleEslaped / 360) > 0)
+            {
+                _angleEslaped -= 360f;
+                counter++;
+            }
+
+            _angleLastFrame = pController._angle;
 
             if (!fullyTightened)
             {
-                myTransform.eulerAngles = new Vector3(0, 0, rotationCounter);
+                myTransform.eulerAngles = new Vector3(0, 0, (counter + _angleEslaped/360) * 360 * playerRotationDir);
                 UpdateAnimation();
 
                 if (rotationCounter >= rotationsUntilTightened)
@@ -116,14 +123,23 @@ public class ScrewController : MonoBehaviour
     }
 
 
+
+
     public void OnPlayerLatch()
     {
+        hasPlayer = true;
 
+        playerRotationDir = pController._rotationDirection;
+        _angleEslaped = 0f;
+        _angleLastFrame = pController._angle;
+        _angleEslaped = 0f;
+        counter = 0;
+        rotationOnLatch = pController._angle;
     }
 
     public void OnPlayerDetach()
     {
-
+        hasPlayer = false;
     }
 
     private void UpdateAnimation()
@@ -169,6 +185,7 @@ public class ScrewController : MonoBehaviour
         myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
         pController.RetractGrapple();
+
         //player let go of screw
     }
 }
