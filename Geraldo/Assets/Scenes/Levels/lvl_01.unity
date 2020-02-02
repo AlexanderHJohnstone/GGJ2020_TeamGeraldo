@@ -830,6 +830,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1570693169}
     m_Modifications:
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _startIllumination
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _activeColor.r
+      value: 7.4642644
+      objectReference: {fileID: 0}
     - target: {fileID: 4596526467982507158, guid: 165eb8a9603af4c1187455974e6f2fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3906,6 +3916,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1570693169}
     m_Modifications:
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _startIllumination
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _activeColor.r
+      value: 7.4642644
+      objectReference: {fileID: 0}
     - target: {fileID: 4596526467982507158, guid: 165eb8a9603af4c1187455974e6f2fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4405,6 +4425,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1570693169}
     m_Modifications:
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _startIllumination
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _activeColor.r
+      value: 7.4642644
+      objectReference: {fileID: 0}
     - target: {fileID: 4596526467982507158, guid: 165eb8a9603af4c1187455974e6f2fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5544,6 +5574,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1570693169}
     m_Modifications:
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _startIllumination
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _activeColor.r
+      value: 7.4642644
+      objectReference: {fileID: 0}
     - target: {fileID: 4596526467982507158, guid: 165eb8a9603af4c1187455974e6f2fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5989,6 +6029,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1570693169}
     m_Modifications:
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _startIllumination
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _activeColor.r
+      value: 7.4642644
+      objectReference: {fileID: 0}
     - target: {fileID: 4596526467982507158, guid: 165eb8a9603af4c1187455974e6f2fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6984,6 +7034,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1570693169}
     m_Modifications:
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _startIllumination
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _activeColor.r
+      value: 7.4642644
+      objectReference: {fileID: 0}
     - target: {fileID: 4596526467982507158, guid: 165eb8a9603af4c1187455974e6f2fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7641,6 +7701,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1570693169}
     m_Modifications:
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _startIllumination
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196530936886147806, guid: 165eb8a9603af4c1187455974e6f2fdf,
+        type: 3}
+      propertyPath: _activeColor.r
+      value: 7.4642644
+      objectReference: {fileID: 0}
     - target: {fileID: 4596526467982507158, guid: 165eb8a9603af4c1187455974e6f2fdf,
         type: 3}
       propertyPath: m_LocalPosition.x
