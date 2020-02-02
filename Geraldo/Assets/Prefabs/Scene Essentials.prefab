@@ -683,6 +683,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1314697983627703903}
     m_Modifications:
+    - target: {fileID: 8949666911959915548, guid: d557516d4bb2746fa93d77c709d4ebb1,
+        type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8949666912658526185, guid: d557516d4bb2746fa93d77c709d4ebb1,
         type: 3}
       propertyPath: _grappleSpeed
@@ -728,6 +733,17 @@ PrefabInstance:
       propertyPath: _minimumRotationSpeed
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 8949666912658526185, guid: d557516d4bb2746fa93d77c709d4ebb1,
+        type: 3}
+      propertyPath: _robotMesh
+      value: 
+      objectReference: {fileID: 8174043669846695403}
+    - target: {fileID: 8949666912658526185, guid: d557516d4bb2746fa93d77c709d4ebb1,
+        type: 3}
+      propertyPath: _deathParticlesPrefab
+      value: 
+      objectReference: {fileID: 4531237796587698616, guid: 61f2bbc1f16ed435c81a46d3876abcc2,
+        type: 3}
     - target: {fileID: 8949666913073109744, guid: d557516d4bb2746fa93d77c709d4ebb1,
         type: 3}
       propertyPath: m_Radius
@@ -804,6 +820,12 @@ Transform:
 --- !u!4 &1314697984559566212 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8949666912658526188, guid: d557516d4bb2746fa93d77c709d4ebb1,
+    type: 3}
+  m_PrefabInstance: {fileID: 7930034626205860456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8174043669846695403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2269019346090221443, guid: d557516d4bb2746fa93d77c709d4ebb1,
     type: 3}
   m_PrefabInstance: {fileID: 7930034626205860456}
   m_PrefabAsset: {fileID: 0}
