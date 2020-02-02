@@ -31,12 +31,15 @@ public class PlayerMovementController : MonoBehaviour
 
     //grapple fields
     [Header("GRAPPLE PROPERTIES")]
+    [HideInInspector]
     public float _rotationDirection;
     private float _radius;
+    [HideInInspector]
     public float _angle;
     private Vector3 _attachPoint;
     private Vector3 _targetPosition;
     public float _grappleSpeed = 10f;
+    public float _minGrappleRadius = 1f;
     public float _maxGrappleDistance = 5f;
     private float _currentRotationSpeed;
     public float _minimumRotationSpeed = 3f;
@@ -162,6 +165,10 @@ public class PlayerMovementController : MonoBehaviour
         if(_currentRotationSpeed < _minimumRotationSpeed)
         {
             _currentRotationSpeed = Mathf.Lerp(_currentRotationSpeed, _minimumRotationSpeed, Time.deltaTime * 3f);
+        }
+        if(_radius < _minGrappleRadius)
+        {
+            _radius = Mathf.Lerp(_radius, _minGrappleRadius, 5f * Time.deltaTime);
         }
 
         _angle += (_currentRotationSpeed / _radius) * _rotationDirection;
@@ -307,8 +314,13 @@ public class PlayerMovementController : MonoBehaviour
 
     private void ResetPlayer()
     {
-        transform.position = Vector3.zero;
+        _grappleTarget.transform.parent = _grappleSlot.transform;
+        _grappleTarget.transform.position = _grappleSlot.transform.position;
+        _grappleMeshFollower.GrappleReset();
+        _armLine.enabled = false;
         _velocity = new Vector3(0f, 10f, 0f);
+        transform.position = Vector3.zero;
+        _currentGrappleState = _grappleStates._idle;
     }
 
     private void OnTriggerEnter(Collider other)
