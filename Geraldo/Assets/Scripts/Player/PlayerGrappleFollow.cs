@@ -21,6 +21,12 @@ public class PlayerGrappleFollow : MonoBehaviour
         _isGrappling = false;
     }
 
+    public void GrappleReset()
+    {
+        GrappleEnd();
+        transform.position = _grappleTarget.transform.position;
+    }
+
     public void LateUpdate()
     {
         if (_isGrappling)
