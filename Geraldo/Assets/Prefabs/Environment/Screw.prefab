@@ -372,7 +372,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7948005402293142024}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.8778636, y: 20.670551, z: 34.85414}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4735325225452444561}
@@ -392,21 +392,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c4cc7fc9d29d448a11042eda57e015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nut: {fileID: 804639113059048769}
-  lugNutTransform: {fileID: 4735325225452444561}
+  resetTime: 10
   rotationFromMiddle: 2
   initialScrewPosition: 0.5
   matPropertyToChange: _Color
   tightenedColor: {r: 1, g: 0, b: 0, a: 1}
   loosenedColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  resetTime: 2
   screwPrefab: {fileID: 7948005402293142024}
   playerRotationDir: -1
   counter: 0
   hasPlayer: 0
   rotationOnLatch: 0
-  lightBulbs: []
+  nut: {fileID: 804639113059048769}
+  lugNutTransform: {fileID: 4735325225452444561}
 --- !u!136 &6470912208056754338
 CapsuleCollider:
   m_ObjectHideFlags: 0
