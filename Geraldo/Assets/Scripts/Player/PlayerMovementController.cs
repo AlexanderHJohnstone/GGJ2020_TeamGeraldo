@@ -249,4 +249,18 @@ public class PlayerMovementController : MonoBehaviour
         }
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
     }
+
+    private void ResetPlayer()
+    {
+        transform.position = Vector3.zero;
+        _velocity = new Vector3(0f, 10f, 0f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("Killzone"))
+        {
+            ResetPlayer();
+        }
+    }
 }

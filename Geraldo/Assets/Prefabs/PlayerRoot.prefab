@@ -1050,9 +1050,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8949666912658526188}
+  - component: {fileID: 3767540994321928254}
+  - component: {fileID: 8949666911964311133}
   - component: {fileID: 8949666912658526184}
   - component: {fileID: 8949666912658526185}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1075,6 +1077,36 @@ Transform:
   m_Father: {fileID: 8949666913436188564}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &3767540994321928254
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8949666912658526186}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &8949666911964311133
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8949666912658526186}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.77
+  m_Height: 2.58
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8949666912658526184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,6 +1142,8 @@ MonoBehaviour:
   _maxHorizontalSpeed: 10
   _maxVerticalSpeed: 25
   _gravity: 0.2
+  _rotationDirection: 0
+  _angle: 0
   _grappleSpeed: 30
   _maxGrappleDistance: 15
   _minimumRotationSpeed: 20
@@ -1157,7 +1191,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8949666913073109745
 Rigidbody:
@@ -1197,7 +1231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8949666913436188564}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
