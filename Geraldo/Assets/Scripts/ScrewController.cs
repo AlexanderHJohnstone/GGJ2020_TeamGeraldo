@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class ScrewController : MonoBehaviour
 {
     [SerializeField]
-    GameObject nut;
-    [SerializeField]
-    private Transform lugNutTransform;
+    private float resetTime = 2.0f;
 
     [Header("ROTATION LIMITS")]
     [SerializeField]
@@ -29,17 +28,25 @@ public class ScrewController : MonoBehaviour
     [SerializeField]
     private Color defaultColor = Color.white;
 
+
+
     [Header("DO-NOT-MODIFY PROPERTIES")]
+    [SerializeField]
+    private GameObject screwPrefab;
     [SerializeField]
     private float playerRotationDir = -1;
     [SerializeField]
     private float counter = 0;
     public bool hasPlayer = false;
     public float rotationOnLatch = 0f;
-
-    [Header("LIGHT BULBS")]
     [SerializeField]
-    private LightBulbController[] lightBulbs;
+    GameObject nut;
+    [SerializeField]
+    private Transform lugNutTransform;
+
+    //[Header("LIGHT BULBS")]
+    //[SerializeField]
+    //private LightBulbController[] lightBulbs;
 
     //Private Vars
     private PlayerMovementController pController;
@@ -54,19 +61,11 @@ public class ScrewController : MonoBehaviour
 
     private bool fullyTightened = false;
 
+    private bool resetTimerStarted = false;
+
     private void Start()
     {
-        //convert the rotation min and max vars to rotation values
-
-        pController = FindObjectOfType<PlayerMovementController>();
-
-        //setup component connections
-        anim = nut.GetComponent<Animator>();
-        screwRB = nut.GetComponent<Rigidbody>();
-        screwMat = nut.GetComponent<Renderer>().material;
-
-        anim.SetFloat("AnimationTime", initialScrewPosition);
-        counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
+        InitializeCrap();
     }
 
     private float _angleLastFrame = 0;
@@ -193,15 +192,58 @@ public class ScrewController : MonoBehaviour
         anim.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
         pController.ReleaseGrapple();
-        //player let go of screw
+
+        if(!resetTimerStarted)
+            StartCoroutine(ResetScrewTimer());
     }
 
-    private void ResetScrewCompletely()
+
+
+    public void ResetScrewCompletely()
     {
-        SetBackToNorm();
+        ScrewController newScrew = Instantiate(screwPrefab, transform.position, transform.rotation).GetComponent<ScrewController>();
+
+        //setup Vars to match this screw's vars
+        newScrew.rotationFromMiddle = rotationFromMiddle;
+        newScrew.initialScrewPosition = initialScrewPosition;
+        newScrew.resetTime = resetTime;
+        newScrew.defaultColor = defaultColor;
+        newScrew.loosenedColor = loosenedColor;
+        newScrew.tightenedColor = tightenedColor;
+        newScrew.matPropertyToChange = matPropertyToChange;
+        newScrew.InitializeCrap();
+
+        Destroy(this.gameObject);
+    }
+
+
+    private IEnumerator ResetScrewTimer()
+    {
+        resetTimerStarted = true;
+        yield return new WaitForSeconds(resetTime);
+        ResetScrewCompletely();
+    }
+
+
+    
+    public void InitializeCrap()
+    {
+        pController = FindObjectOfType<PlayerMovementController>();
+
+        //setup component connections
+        anim = nut.GetComponent<Animator>();
+        screwRB = nut.GetComponent<Rigidbody>();
+        screwMat = nut.GetComponent<Renderer>().material;
+
+        //reset screw
+        nut.transform.position = new Vector3(0, 1, 0);
+        nut.transform.eulerAngles = Vector3.zero;
+        screwRB.useGravity = false;
+        screwRB.isKinematic = true;
+        anim.enabled = true;
+        screwMat.SetColor(matPropertyToChange, defaultColor);
+
         anim.SetFloat("AnimationTime", initialScrewPosition);
         counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
-        _angleLastFrame = 0;
-
     }
 }
