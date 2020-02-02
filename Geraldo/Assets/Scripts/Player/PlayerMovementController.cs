@@ -31,8 +31,8 @@ public class PlayerMovementController : MonoBehaviour
 
     //grapple fields
     [Header("GRAPPLE FIELDS")]
-    private float _radius;
     public float _rotationDirection;
+    private float _radius;
     public float _angle;
     private Vector3 _attachPoint;
     private Vector3 _targetPosition;
@@ -40,6 +40,7 @@ public class PlayerMovementController : MonoBehaviour
     public float _maxGrappleDistance = 5f;
     private float _currentRotationSpeed;
     public float _minimumRotationSpeed = 3f;
+    private bool _canLaunchGrapple = true;
 
     private void Start()
     {
@@ -54,6 +55,12 @@ public class PlayerMovementController : MonoBehaviour
         //poll input
         _hDir = _inputManager.GetHorizontal();
         bool grapple = _inputManager.GetGrapple();
+        bool grappleReleased = _inputManager.GrappleReleased();
+
+        if(grappleReleased)
+        {
+            _canLaunchGrapple = true;
+        }
 
         if(Mathf.Abs(_hDir) > 0f)
         {
@@ -66,8 +73,10 @@ public class PlayerMovementController : MonoBehaviour
                 AirMovement();
                 LookRotationFree();
 
-                if (grapple)
+                if (_canLaunchGrapple && grapple)
                 {
+                    _armLine.enabled = true;
+                    _canLaunchGrapple = false;
                     Vector3 mousePosition = Input.mousePosition;
                     mousePosition.z = -Camera.main.transform.position.z;
                     Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -179,10 +188,12 @@ public class PlayerMovementController : MonoBehaviour
 
     public void RetractGrapple()
     {
-        _grappleMeshFollower.GrappleEnd();
         _grappleTarget.transform.position = Vector3.MoveTowards(_grappleTarget.transform.position, _grappleSlot.transform.position, _grappleSpeed * Time.deltaTime);
-        if(Vector3.Distance(_grappleTarget.transform.position, _grappleSlot.transform.position) < 0.1f)
+        if(Vector3.Distance(_grappleTarget.transform.position, _grappleSlot.transform.position) < 0.5f)
         {
+            Debug.Log("Retracted");
+            _armLine.enabled = false;
+            _grappleMeshFollower.GrappleEnd();
             _grappleTarget.transform.parent = _grappleSlot.transform;
             _grappleTarget.transform.position = _grappleSlot.transform.position;
             _currentGrappleState = _grappleStates._idle;

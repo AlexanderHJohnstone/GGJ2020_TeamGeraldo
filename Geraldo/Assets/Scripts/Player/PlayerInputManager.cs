@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerInputManager : MonoBehaviour
 {
     private float _horizontal;
-    private bool _grapple;
+    private bool _grappleHeld;
+    private bool _grappleReleased;
 
     private void Update()
     {
         _horizontal = Input.GetAxis("Horizontal");
-        _grapple = Input.GetButton("Grapple");
+        _grappleHeld = Input.GetButton("Grapple");
+        _grappleReleased = Input.GetButtonUp("Grapple");
     }
 
     public float GetHorizontal()
@@ -20,6 +22,11 @@ public class PlayerInputManager : MonoBehaviour
 
     public bool GetGrapple()
     {
-        return _grapple;
+        return _grappleHeld;
+    }
+
+    public bool GrappleReleased()
+    {
+        return _grappleReleased;
     }
 }
