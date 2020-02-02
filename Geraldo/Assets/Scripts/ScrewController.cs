@@ -153,7 +153,7 @@ public class ScrewController : MonoBehaviour
     {
         fullyTightened = true;
         screwMat.SetColor(matPropertyToChange, tightenedColor);
-        pController.RetractGrapple();
+        pController.ReleaseGrapple();
         //stop player's momentum?
     }
 
@@ -171,7 +171,7 @@ public class ScrewController : MonoBehaviour
         anim.enabled = false;
         myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
-        pController.RetractGrapple();
+        pController.ReleaseGrapple();
 
         //player let go of screw
     }
