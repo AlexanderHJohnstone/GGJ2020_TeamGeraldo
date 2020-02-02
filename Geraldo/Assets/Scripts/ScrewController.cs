@@ -20,14 +20,17 @@ public class ScrewController : MonoBehaviour
     [SerializeField]
     private Color defaultColor = Color.white;
 
-    //Debug Vars
-    [SerializeField]
-    private bool hasPlayer = false;
-
     [SerializeField]
     private float rotationCounter = 0;
 
+    public bool hasPlayer = false;
+
+    public float rotationOnLatch = 0f;
+
+
     //Private Vars
+    private PlayerMovementController pController;
+
     private Material screwMat;
 
     private Transform myTransform;
@@ -40,11 +43,13 @@ public class ScrewController : MonoBehaviour
 
     private bool fullyTightened = false;
 
-    private float playerRot;
+    //private float playerRot;
 
     private float animationPercentage = 0.5f;
 
     private CapsuleCollider myCol;
+
+
 
     #region Temp Vars
     [SerializeField]
@@ -58,6 +63,8 @@ public class ScrewController : MonoBehaviour
         rotationsUntilTightened *= 360.0f;
         rotationsUntilPopOut *= -360.0f;
 
+        pController = GameObject.FindObjectOfType<PlayerMovementController>();
+
         //setup component connections
         myTransform = GetComponent<Transform>();
         myCol = GetComponent<CapsuleCollider>();
@@ -68,15 +75,23 @@ public class ScrewController : MonoBehaviour
 
     private void Update()
     {
-        //Temp Code
-        playerRot = rotationSlider.value * 4;
-        rotationCounter = 360 * playerRot;
-        //end temp
+        ////Temp Code
+        //playerRot = rotationSlider.value * 4;
+        //rotationCounter = 360 * playerRot;
+        ////end temp
 
+        rotationCounter = pController._angle;
 
         //rotationCounter will be pulled from player script
         if (turningEnabled && hasPlayer)
         {
+            int rotationMultiplier = 1;
+
+            if (pController._rotationDirection > 0 && rotationCounter > rotationOnLatch)
+                rotationMultiplier++;
+            if (pController._rotationDirection < 0 && rotationCounter < rotationOnLatch)
+                rotationMultiplier++;
+
             if (!fullyTightened)
             {
                 myTransform.eulerAngles = new Vector3(0, 0, rotationCounter);
@@ -96,11 +111,20 @@ public class ScrewController : MonoBehaviour
 
                     SetBackToNorm();
                 }
-
             }
         }
     }
 
+
+    public void OnPlayerLatch()
+    {
+
+    }
+
+    public void OnPlayerDetach()
+    {
+
+    }
 
     private void UpdateAnimation()
     {
@@ -126,6 +150,7 @@ public class ScrewController : MonoBehaviour
     {
         fullyTightened = true;
         screwMat.SetColor(matPropertyToChange, tightenedColor);
+        pController.RetractGrapple();
         //stop player's momentum?
     }
 
@@ -143,6 +168,7 @@ public class ScrewController : MonoBehaviour
         anim.enabled = false;
         myCol.enabled = false;
         screwMat.SetColor(matPropertyToChange, loosenedColor);
+        pController.RetractGrapple();
         //player let go of screw
     }
 }

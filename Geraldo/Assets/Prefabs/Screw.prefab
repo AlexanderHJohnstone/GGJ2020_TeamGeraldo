@@ -166,7 +166,7 @@ MonoBehaviour:
   tightenedColor: {r: 1, g: 0, b: 0, a: 1}
   loosenedColor: {r: 0, g: 0, b: 1, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  hasPlayer: 1
+  hasPlayer: 0
   rotationCounter: 0
   rotationSlider: {fileID: 0}
 --- !u!136 &7948005402293142021
