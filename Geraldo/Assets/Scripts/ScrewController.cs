@@ -94,7 +94,7 @@ public class ScrewController : MonoBehaviour
             
             if (!fullyTightened)
             {
-                UpdateLightBulbIntensityScale();
+               // UpdateLightBulbIntensityScale();
                 float screwAngle = counter * 360;
                 lugNutTransform.eulerAngles = new Vector3(screwAngle, -90, 90);
                 UpdateAnimation();
@@ -114,19 +114,19 @@ public class ScrewController : MonoBehaviour
         }
     }
 
-    private void UpdateLightBulbIntensityScale()
-    {
-        if (lightBulbs == null || lightBulbs.Length == 0)
-            return;
+    //private void UpdateLightBulbIntensityScale()
+    //{
+    //    if (lightBulbs == null || lightBulbs.Length == 0)
+    //        return;
 
-        float rotationPercent = Mathf.InverseLerp(
-            _directedRotationUntilTightened,
-            _directedRotationsUntilPopOut,
-            -1 * counter);
+    //    float rotationPercent = Mathf.InverseLerp(
+    //        _directedRotationUntilTightened,
+    //        _directedRotationsUntilPopOut,
+    //        -1 * counter);
 
-        foreach (var bulb in lightBulbs)
-            bulb.SetIntensityScale(rotationPercent, (int)playerRotationDir);
-    }
+    //    foreach (var bulb in lightBulbs)
+    //        bulb.SetIntensityScale(rotationPercent, (int)playerRotationDir);
+    //}
 
     private void OnValidate()
     {
@@ -174,7 +174,7 @@ public class ScrewController : MonoBehaviour
     {
         fullyTightened = true;
         screwMat.SetColor(matPropertyToChange, tightenedColor);
-        pController.ReleaseGrapple();
+        //pController.ReleaseGrapple();
         //stop player's momentum?
     }
 
@@ -193,5 +193,14 @@ public class ScrewController : MonoBehaviour
         screwMat.SetColor(matPropertyToChange, loosenedColor);
         pController.ReleaseGrapple();
         //player let go of screw
+    }
+
+    private void ResetScrewCompletely()
+    {
+        SetBackToNorm();
+        anim.SetFloat("AnimationTime", initialScrewPosition);
+        counter = Mathf.Lerp(_directedRotationUntilTightened, _directedRotationsUntilPopOut, initialScrewPosition);
+        _angleLastFrame = 0;
+
     }
 }
