@@ -57,6 +57,23 @@ public class PlayerMovementController : MonoBehaviour
     [Header("MISC PROPERTIES")]
     public float _deathResetDelay = 1f;
 
+    [Header("Audio Junk")]
+    public AudioSource _playerSoundSource;
+
+    public AudioClip _audioGrappleShoot;
+    public float _audioGrappleShootVol = 1.0f;
+    public AudioClip _audioGrappleAttatch;
+    public float _audioGrappleAttatchVol = 1.0f;
+    public AudioClip _audioGrappleRelease;
+    public float _audioGrappleReleaseVol = 1.0f;
+    public AudioClip _audioArappleSpin;
+    public float _audioGrappleSpinVol = 1.0f;
+
+    public AudioClip _audioPlayerDeath;
+    public float _audioPlayerDeathVol = 1.0f;
+    public AudioClip _audioPlayerSpawn;
+    public float _audioPlayerSpawnVol = 1.0f;
+
     private void Awake()
     {
         if(_instance == null)
@@ -343,6 +360,7 @@ public class PlayerMovementController : MonoBehaviour
         _robotMesh.SetActive(false);
         Instantiate(_deathParticlesPrefab, transform.position, Quaternion.identity);
         StartCoroutine(ResetCountdown());
+        _playerSoundSource.PlayOneShot(_audioPlayerDeath, _audioPlayerDeathVol);
     }
 
     private IEnumerator ResetCountdown()
